@@ -15,7 +15,7 @@ public class FileTests {
     @DataProvider(name = "files", parallel = true)
     public Object[] provideFiles() throws IOException {
         Path path = Paths.get(System.getProperty("source.dir"));
-        return Files.list(path).toArray();
+        return Files.walk(path).toArray();
     }
 
     @Test(dataProvider = "files", description = "Test that file exists in destination directory.")
@@ -29,7 +29,7 @@ public class FileTests {
     public Object[] provideExistingFiles() throws IOException {
         Path path = Paths.get(System.getProperty("source.dir"));
         List<Path> resultArray = new ArrayList<>();
-        for (Object current : Files.list(path).toArray()) {
+        for (Object current : Files.walk(path).toArray()) {
             Path currentPath = (Path) current;
             Path destPath = getDestPathFromSource(currentPath);
             if (Files.exists(destPath)) resultArray.add(currentPath);
@@ -71,7 +71,7 @@ public class FileTests {
     public Object[] provideSymbolicLinks() throws IOException {
         Path path = Paths.get(System.getProperty("source.dir"));
         List<Path> resultArray = new ArrayList<>();
-        for (Object current : Files.list(path).toArray()) {
+        for (Object current : Files.walk(path).toArray()) {
             Path currentPath = (Path) current;
             Path destPath = getDestPathFromSource(currentPath);
             if (Files.isSymbolicLink(destPath)) resultArray.add(currentPath);
