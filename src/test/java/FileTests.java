@@ -15,7 +15,7 @@ public class FileTests {
     @DataProvider(name = "files", parallel = true)
     public Object[] provideFiles() throws IOException {
         Path path = Paths.get(System.getProperty("source.dir"));
-        return  Files.walk(path).toArray();
+        return Files.walk(path).toArray();
     }
 
     @Test(dataProvider = "files", description = "Test that file exists in destination directory.")
@@ -44,7 +44,7 @@ public class FileTests {
         FileTime fmtSource = Files.getLastModifiedTime(sourcePath, LinkOption.NOFOLLOW_LINKS);
         FileTime fmtDest = Files.getLastModifiedTime(destPath, LinkOption.NOFOLLOW_LINKS);
         assertThat(fmtSource)
-                .as("Source file modification time [" + fmtSource.toString() + "] should be equal to dst file modification time [" + fmtDest.toString() + "].")
+                .as("Source file modification time [" + sourcePath + ":" + fmtSource.toString() + "] should be equal to dst file modification time [" + destPath + ":" + fmtDest.toString() + "].")
                 .isEqualTo(fmtDest);
     }
 
@@ -54,7 +54,7 @@ public class FileTests {
         UserPrincipal ownerSource = Files.getOwner(sourcePath, LinkOption.NOFOLLOW_LINKS);
         UserPrincipal ownerDest = Files.getOwner(destPath, LinkOption.NOFOLLOW_LINKS);
         assertThat(ownerDest)
-                .as("Source file owner [" + ownerSource.toString() + "] should be equal to dst file owner [" + ownerDest.toString() + "].")
+                .as("Source file owner [" + sourcePath + ":" + ownerSource.toString() + "] should be equal to dst file owner [" + destPath + ":" + ownerDest.toString() + "].")
                 .isEqualTo(ownerSource);
     }
 
