@@ -15,11 +15,12 @@ public class FileTests {
     @DataProvider(name = "files", parallel = true)
     public Object[] provideFiles() throws IOException {
         Path path = Paths.get(System.getProperty("source.dir"));
-        return Files.walk(path).toArray();
+        return  Files.walk(path).toArray();
     }
 
     @Test(dataProvider = "files", description = "Test that file exists in destination directory.")
     public void testFileExists(Path sourcePath) {
+        System.out.println(sourcePath);
         Path destPath = getDestPathFromSource(sourcePath);
         Boolean destFileExists = Files.exists(destPath, LinkOption.NOFOLLOW_LINKS);
         assertThat(destFileExists).as("Destination path should exist [" + destPath.toString() + "].").isTrue();
@@ -90,6 +91,7 @@ public class FileTests {
 
     private Path getDestPathFromSource(Path sourcePath) {
         Path destPathDir = Paths.get(System.getProperty("dest.dir"));
-        return Paths.get(destPathDir.toString(), sourcePath.getFileName().toString());
+        Path relativeDest = Paths.get(System.getProperty("source.dir")).relativize(sourcePath);
+        return Paths.get(destPathDir.toString(), relativeDest.toString());
     }
 }
