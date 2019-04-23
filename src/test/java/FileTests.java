@@ -28,7 +28,8 @@ public class FileTests {
 
     @DataProvider(name = "existingFiles", parallel = true)
     public Object[] provideExistingFiles() throws IOException {
-        Path path = Paths.get(System.getProperty("source.dir"));
+        String onlyDir = System.getProperty("only.dir");
+        Path path = onlyDir == null ? Paths.get(System.getProperty("source.dir")) : Paths.get(System.getProperty("source.dir"), onlyDir);
         List<Path> resultArray = new ArrayList<>();
         for (Object current : Files.walk(path).toArray()) {
             Path currentPath = (Path) current;
